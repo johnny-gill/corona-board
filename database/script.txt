@@ -1,0 +1,8 @@
+// DB 및 유저 생성, 유저 권한 추가
+mysql -u root -p
+create database coronaboard;
+create user 'coronaboard_admin'@'%' identified by '1234';
+grant create, alter, drop, index, insert, select, update, delete, lock tables on `coronaboard`.* TO 'coronaboard_admin'@'%';
+
+mysql -u coronaboard_admin -p
+show databases;
