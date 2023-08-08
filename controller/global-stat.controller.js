@@ -1,4 +1,5 @@
 const { GlobalStat } = require('../database');
+const { wrapWithErrorHandler } = require('../util');
 
 const getAll = async (req, res) => {
   const result = await GlobalStat.findAll();
@@ -6,24 +7,20 @@ const getAll = async (req, res) => {
 };
 
 const insertOrUpdate = async (req, res) => {
-  try {
-    const { cc, date } = req.body;
-    if (!cc || !date) {
-      res.status(400).json({ error: 'cc and date are required' });
-      return;
-    }
-
-    const count = await GlobalStat.count({ where: { cc, date } });
-    if (count === 0) {
-      await GlobalStat.create(req.body);
-    } else {
-      await GlobalStat.update(req.body, { where: { cc, date } });
-    }
-
-    res.status(200).json({ result: 'success' });
-  } catch (e) {
-    res.status(500).json({ error: e.toString() });
+  const { cc, date } = req.body;
+  if (!cc || !date) {
+    res.status(400).json({ error: 'cc and date are required' });
+    return;
   }
+
+  const count = await GlobalStat.count({ where: { cc, date } });
+  if (count === 0) {
+    await GlobalStat.create(req.body);
+  } else {
+    await GlobalStat.update(req.body, { where: { cc, date } });
+  }
+
+  res.status(200).json({ result: 'success' });
 };
 
 const remove = async (req, res) => {
@@ -38,8 +35,8 @@ const remove = async (req, res) => {
   res.status(200).json({ result: 'success' });
 };
 
-module.exports = {
+module.exports = wrapWithErrorHandler({
   getAll,
   insertOrUpdate,
   remove,
-};
+});
