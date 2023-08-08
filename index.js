@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { sequelize } = require('./database');
+const globalStatController = require('./controller/global-stat.controller');
 
 const launchServer = async () => {
   const app = express();
@@ -9,6 +10,10 @@ const launchServer = async () => {
   app.get('/', (req, res) => {
     res.json({ message: 'Hello!!!' });
   });
+
+  app.get('/global-stats', globalStatController.getAll);
+  app.post('/global-stats', globalStatController.insertOrUpdate);
+  app.delete('/global-stats', globalStatController.remove);
 
   try {
     await sequelize.sync();
@@ -23,6 +28,6 @@ const launchServer = async () => {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
-}
+};
 
 launchServer();

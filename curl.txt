@@ -1,0 +1,33 @@
+// GET
+curl --request GET 'http://localhost:8080/global-stats'
+
+// POST
+curl --location --request POST 'http://localhost:8080/global-stats' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "cc": "KR", 
+  "date": "2023-08-08",
+  "confirmed": 111,
+  "death": 222,
+  "negative": 333,
+  "released": 444,
+  "tested": 555,
+  "testing": 666
+}'
+
+// DELETE
+curl --location --request DELETE 'http://localhost:8080/global-stats' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "cc": "KR", 
+  "date": "2023-08-08"
+}'
+
+// 오류
+curl --location --request POST 'http://localhost:8080/global-stats' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "cc": "KR", 
+  "date": "2023-08-08",
+  "confirmed": "hello"
+}'
