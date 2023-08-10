@@ -1,3 +1,5 @@
+# global-stats
+
 // GET
 curl --request GET 'http://localhost:8080/global-stats'
 
@@ -31,3 +33,27 @@ curl --location --request POST 'http://localhost:8080/global-stats' \
   "date": "2023-08-08",
   "confirmed": "hello"
 }'
+
+
+# key-value
+
+// GET
+curl --request GET 'http://localhost:8080/key-value/hwarang'
+
+// POST
+curl --request POST 'http://localhost:8080/key-value' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "key": "hwarang",
+  "value": "dambae3"
+}'
+
+curl --request POST 'http://localhost:8080/key-value' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "key": "ojower",
+  "value": "Anj2KAlw"
+}'
+
+// DELETE
+curl --request DELETE 'http://localhost:8080/key-value/hwarang'
