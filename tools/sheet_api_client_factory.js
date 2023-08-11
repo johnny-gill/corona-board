@@ -9,6 +9,7 @@ class SheetApiClientFactory {
   static create = async () => {
     const credential = fs.readFileSync('credentials.json');
     const auth = await this._authorize(JSON.parse(credential));
+    return google.sheets({ version: 'v4', auth });
   };
 
   static _authorize = async (credentials) => {
@@ -21,7 +22,14 @@ class SheetApiClientFactory {
 
     if (!fs.existsSync(TOKEN_PATH)) {
       const token = await this._getNewToken(oAuth2Client);
+      oAuth2Client.setCredentials(token);
+
+      fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
+      return oAuth2Client;
     }
+
+    const token = JSON.parse(fs.readFileSync(TOKEN_PATH));
+    oAuth2Client.setCredentials(token);
   };
 
   static _getNewToken = async (oAuth2Client) => {
@@ -36,6 +44,15 @@ class SheetApiClientFactory {
       output: process.stdout,
     });
 
-    //const code = await new Promise
+    const code = await new Promise((resolve) => {
+      rl.question('인증 코드를 넣으시오... : ', (code) => resolve(code));
+    });
+
+    rl.close();
+
+    const res = await oAuth2Client.getToken(code);
+    return res.tokens;
   };
 }
+
+module.exports = SheetApiClientFactory;
