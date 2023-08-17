@@ -6,3 +6,6 @@ grant create, alter, drop, index, insert, select, update, delete, lock tables on
 
 mysql -u coronaboard_admin -p
 show databases;
+
+// 데이터 로드
+mysql -u coronaboard_admin -p coronaboard < coronaboard_dump.sql
