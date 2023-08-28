@@ -20,8 +20,8 @@ class DomesticCrawler {
 
     return {
       basicStats: this._extractBasicStats($),
-      byAge: this._extractBy($, '확진자 성별 현황'),
-      bySex: this._extractBy($, '확진자 연령별 현황'),
+      byAge: this._extractByAge($),
+      bySex: this._extractBySex($),
     };
   }
 
@@ -51,12 +51,51 @@ class DomesticCrawler {
     };
   }
 
-  _extractBy($, title) {
-    const rowEls = $(`h5.s_title_in3:contains(${title})`)
-      .parent()
-      .parent()
-      .next()
-      .find('table tbody tr');
+  _extractBySex($) {
+    const mapping = {
+      남성: 'male',
+      여성: 'female',
+    };
+
+    return this._extractByDataWithMapping($, mapping);
+  }
+
+  _extractByAge($) {
+    const mapping = {
+      '80 이상': 80,
+      '70-79': 70,
+      '60-69': 60,
+      '50-59': 50,
+      '40-49': 40,
+      '30-39': 30,
+      '20-29': 20,
+      '10-19': 10,
+      '0-9': 0,
+    };
+
+    return this._extractByDataWithMapping($, mapping);
+  }
+
+  _extractByDataWithMapping($, mapping) {
+    const result = {};
+
+    $('.data_table table tbody tr').each((i, tr) => {
+      const cols = $(tr).children();
+      _.forEach(mapping, (newKey, oldKey) => {
+        if ($(cols.get(0)).text() === oldKey) {
+          result[newKey] = {
+            confirmed: this._normalize($(cols.get(1)).text()),
+            death: this._normalize($(cols.get(2)).text()),
+          };
+        }
+      });
+    });
+
+    if (_.isEmpty(result)) {
+      throw new Error('data not found.');
+    }
+
+    return result;
   }
 
   _normalize(numberText) {
