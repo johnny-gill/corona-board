@@ -52,4 +52,4 @@ const crawlAndUpdateDomestic = async (outputPath, apiClient) => {
   await apiClient.upsertKeyValue('byAgeAndSex', value);
 };
 
-module.exports = crawlAndUpdateDomestic;
+module.exports = { crawlAndUpdateDomestic };

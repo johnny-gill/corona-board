@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { default: axios } = require('axios');
-const { Cheerio } = require('cheerio');
+const cheerio = require('cheerio');
 
 class DomesticCrawler {
   constructor() {
@@ -16,7 +16,7 @@ class DomesticCrawler {
     const url =
       'https://yjiq150.github.io/coronaboard-crawling-sample/clone/ncov/';
     const resp = await this.client.get(url);
-    const $ = Cheerio.load(resp.data);
+    const $ = cheerio.load(resp.data);
 
     return {
       basicStats: this._extractBasicStats($),
