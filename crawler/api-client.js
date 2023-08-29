@@ -6,7 +6,10 @@ class ApiClient {
       baseURL: process.env.CB_API_BASE_URL || 'http://localhost:8080',
     });
 
-    client.interceptors.response.use((resp) => resp.data);
+    client.interceptors.response.use((resp) => {
+      console.log('resp', resp);
+      return resp.data;
+    });
 
     this.client = client;
   }

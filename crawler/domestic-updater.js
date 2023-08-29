@@ -7,11 +7,11 @@ const { utcToZonedTime, format } = require('date-fns-tz');
 const crawlAndUpdateDomestic = async (outputPath, apiClient) => {
   let prevData = {};
   const domesticStatPath = path.join(outputPath, 'domestic-stat.json');
-  console.log('domesticStatPath ====> ', domesticStatPath);
+  
   try {
     prevData = JSON.parse(fs.readFileSync(domesticStatPath, 'utf-8'));
   } catch (e) {
-    console.log('previous domesticStat not found');
+    console.error('previous domestic stat not found');
   }
 
   const domesticCrawler = new DomesticCrawler();
@@ -48,7 +48,6 @@ const crawlAndUpdateDomestic = async (outputPath, apiClient) => {
 
   const { byAge, bySex } = newData.domesticStat;
   const value = JSON.stringify({ byAge, bySex });
-  console.log(value);
   await apiClient.upsertKeyValue('byAgeAndSex', value);
 };
 
