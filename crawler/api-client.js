@@ -24,6 +24,14 @@ class ApiClient {
       value,
     });
   }
+
+  async findAllGlobalStat() {
+    return await this.client.get('global-stats');
+  }
+
+  async findKeyValue(key) {
+    return await this.client.get(`key-value/${key}`);
+  }
 }
 
 module.exports = ApiClient;
