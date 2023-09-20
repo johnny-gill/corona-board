@@ -1,25 +1,25 @@
 const _ = require('lodash');
-const axios = require('axios');
 const countryInfo = require('../../tools/downloaded/countryInfo.json');
 const { format, subDays } = require('date-fns');
 const { utcToZonedTime } = require('date-fns-tz');
+const ApiClient = require('./api-client');
 
 const getDataSource = async () => {
   const countryByCc = _.keyBy(countryInfo, 'cc');
-  const globalStats = await generateGlobalStats();
+  const apiClient = new ApiClient();
 
-  return { globalStats, countryByCc };
+  const allGlobalStats = await apiClient.getAllGlobalStats();
+  const groupedByDate = _.groupBy(allGlobalStats, 'date'); // 날짜별로 그룹화한 데이터
+  const globalStats = generateGlobalStats(groupedByDate);
+
+  return {
+    lastUpdated: Date.now(),
+    countryByCc,
+    globalStats,
+  };
 };
 
-const generateGlobalStats = async () => {
-  const apiClient = axios.create({
-    baseURL: process.env.CORONABOARD_API_BASE_URL || 'http://localhost:8080',
-  });
-
-  const response = await apiClient.get('global-stats');
-
-  const groupedByDate = _.groupBy(response.data.result, 'date');
-
+const generateGlobalStats = (groupedByDate) => {
   const now = new Date('2021-06-05');
   const timeZone = 'Asia/Seoul';
   const today = format(utcToZonedTime(now, timeZone), 'yyyy-MM-dd');
