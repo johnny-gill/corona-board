@@ -25,7 +25,7 @@ export const DashboardItem = ({ text, current, prev, diffColor, unit }) => {
       >
         {formattedNumber}
       </p>
-      {prev && (
+      {prev ? (
         <p
           css={css`
             position: absolute;
@@ -36,7 +36,7 @@ export const DashboardItem = ({ text, current, prev, diffColor, unit }) => {
         >
           {formatDiff(current, prev)}
         </p>
-      )}
+      ) : null}
       <p>{text}</p>
     </div>
   );
