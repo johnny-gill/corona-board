@@ -3,6 +3,7 @@ const countryInfo = require('../../tools/downloaded/countryInfo.json');
 const { format, subDays } = require('date-fns');
 const { utcToZonedTime } = require('date-fns-tz');
 const ApiClient = require('./api-client');
+const notice = require('../../tools/downloaded/notice.json');
 
 const getDataSource = async () => {
   const countryByCc = _.keyBy(countryInfo, 'cc');
@@ -16,6 +17,7 @@ const getDataSource = async () => {
     lastUpdated: Date.now(),
     countryByCc,
     globalStats,
+    notice: notice.filter(x => !x.hidden)
   };
 };
 

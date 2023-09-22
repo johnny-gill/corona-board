@@ -2,14 +2,13 @@ import { css } from '@emotion/react';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dashboard } from '../components/dashboard';
+import { Notice } from '../components/notice';
 
 const SinglePage = ({ pageContext }) => {
   const { dataSource } = pageContext;
-  const { lastUpdated, globalStats } = dataSource;
+  const { lastUpdated, globalStats, notice } = dataSource;
   const lastUpdatedFormatted = new Date(lastUpdated).toLocaleString();
 
-  console.log(globalStats);
-  
   return (
     <div id="top">
       <div
@@ -37,6 +36,7 @@ const SinglePage = ({ pageContext }) => {
         마지막 업데이트 : {lastUpdatedFormatted}
       </p>
       <Dashboard globalStats={globalStats} />
+      <Notice notice={notice} />
     </div>
   );
 };
