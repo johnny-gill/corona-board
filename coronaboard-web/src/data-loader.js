@@ -53,6 +53,7 @@ const createGlobalStatWithPrevField = (todayStats, yesterdayStats) => {
         negativePrev: yesterdayStat.negative || 0,
         releasedPrev: yesterdayStat.released || 0,
         testedPrev: yesterdayStat.tested || 0,
+        testingPrev: yesterdayStat.testing || 0,
       };
     }
 
