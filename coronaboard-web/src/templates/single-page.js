@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dashboard } from '../components/dashboard';
 import { Notice } from '../components/notice';
 import { GlobalSlide } from '../components/global-slide';
+import { GlobalChartSlide } from '../components/global-chart-slide';
 
 const SinglePage = ({ pageContext }) => {
   const { dataSource } = pageContext;
@@ -39,6 +40,7 @@ const SinglePage = ({ pageContext }) => {
       <Dashboard globalStats={globalStats} />
       <Notice notice={notice} />
       <GlobalSlide id="global-slide" dataSource={dataSource} />
+      <GlobalChartSlide id="global-chart-slide" dataSource={dataSource} />
     </div>
   );
 };

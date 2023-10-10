@@ -5,11 +5,15 @@ import { Echart } from '../echart';
 import { css } from '@emotion/react';
 import Select from 'react-select';
 import { colors } from '../../config';
+import {
+  convertToMonthDay,
+  numberWithUnitFormatter,
+} from '../../utils/formatter';
 
-export const globalTrendChart = ({ countryByCc }) => {
+export const GlobalTrendChart = ({ countryByCc }) => {
   const defaultSelectedItem = {
     value: 'global',
-    label: '전 세계',
+    label: '전세계',
   };
 
   const [chartData, setChartData] = useState(null); // 차트 데이터
@@ -17,15 +21,11 @@ export const globalTrendChart = ({ countryByCc }) => {
   const [selectedItem, setSelectedItem] = useState(defaultSelectedItem); // 전 세계, 국가별
   const countryCodes = Object.keys(countryByCc);
 
-  // useEffect(async () => {
-  //   const response = await axios.get(`/generated/${selectedItem.value}`);
-  //   setChartData(response.data);
-  // }, [selectedItem]);
-
   // 국가 변경시 차트 데이터 변경
   useEffect(() => {
+    console.log('useEffect');
     const fetchDataWithCc = async (cc) => {
-      const response = await axios.get(`/generated/${cc}`);
+      const response = await axios.get(`/generated/${cc}.json`);
       setChartData(response.data);
     };
     fetchDataWithCc(selectedItem.value);
@@ -140,10 +140,58 @@ const generateChartOption = (data, dataType) => {
     },
   ];
 
-
+  // legend : 범례
+  // series : 차트의 실제 데이터
   let legendData;
   let series;
   let dataZoomStart;
-  
 
+  if (dataType === 'acc') {
+    legendData = seriesAccList.map((x) => x.name);
+    series = seriesAccList;
+    dataZoomStart = 30;
+  } else if (dataType === 'daily') {
+    legendData = seriesDailyList.map((x) => x.name);
+    series = seriesDailyList;
+    dataZoomStart = 30;
+  } else {
+    throw new Error(`Not Supported dataType : ${dataType}`);
+  }
+
+  return {
+    animation: false,
+    title: {
+      text: '전세계 코로나(COVID-19) 추이',
+      left: 'center',
+    },
+    tooltip: {
+      trigger: 'axis',
+    },
+    legend: {
+      data: legendData,
+      bottom: 50,
+    },
+    grid: {
+      top: 70,
+      left: 40,
+      right: 10,
+      bottom: 100,
+    },
+    dataZoom: {
+      type: 'slider',
+      show: true,
+      start: dataZoomStart,
+      end: 100,
+    },
+    xAxis: {
+      data: data.date.map(convertToMonthDay),
+    },
+    yAxis: {
+      axisLabel: {
+        rotate: 50,
+        formatter: numberWithUnitFormatter,
+      },
+    },
+    series,
+  };
 };
