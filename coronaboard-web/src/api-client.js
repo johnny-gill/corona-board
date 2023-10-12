@@ -12,8 +12,13 @@ class ApiClient {
   }
 
   async getAllGlobalStats() {
-    const resp = await this.client.get('global-stats');
-    return resp.result;
+    const res = await this.client.get('global-stats');
+    return res.result;
+  }
+
+  async getByAgeAndBySex() {
+    const res = await this.client.get('key-value/byAgeAndSex');
+    return JSON.parse(res.result.value);
   }
 }
 

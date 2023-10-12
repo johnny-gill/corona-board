@@ -5,10 +5,11 @@ import { Dashboard } from '../components/dashboard';
 import { Notice } from '../components/notice';
 import { GlobalSlide } from '../components/global-slide';
 import { GlobalChartSlide } from '../components/global-chart-slide';
+import { KoreaTestChart } from '../components/chart/korea-test-chart';
 
 const SinglePage = ({ pageContext }) => {
   const { dataSource } = pageContext;
-  const { lastUpdated, globalStats, notice } = dataSource;
+  const { lastUpdated, globalStats, notice, koreaTestChartData } = dataSource;
   const lastUpdatedFormatted = new Date(lastUpdated).toLocaleString();
 
   return (
@@ -41,6 +42,10 @@ const SinglePage = ({ pageContext }) => {
       <Notice notice={notice} />
       <GlobalSlide id="global-slide" dataSource={dataSource} />
       <GlobalChartSlide id="global-chart-slide" dataSource={dataSource} />
+      <KoreaTestChart
+        id="korea-test-chart"
+        koreaTestChartData={koreaTestChartData}
+      />
     </div>
   );
 };

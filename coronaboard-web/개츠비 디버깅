@@ -1,0 +1,2 @@
+gatsby develop --inspect-brk
+chrome://inspect

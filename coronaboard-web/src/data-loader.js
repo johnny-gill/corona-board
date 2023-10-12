@@ -12,12 +12,12 @@ const getDataSource = async () => {
   const apiClient = new ApiClient();
 
   const allGlobalStats = await apiClient.getAllGlobalStats();
+  debugger;
   const groupedByDate = _.groupBy(allGlobalStats, 'date'); // 날짜별로 그룹화한 데이터
   const globalStats = generateGlobalStats(groupedByDate);
 
   /**
    * 글로벌 챠트
-   *
    * 전셰게 또는 국가별로 누적 또는 일별 데이터를 조회한다.
    */
   const globalChartDataByCc = generateGlobalChartDataByCc(groupedByDate);
@@ -26,11 +26,33 @@ const getDataSource = async () => {
     fs.outputFileSync(genPath, JSON.stringify(globalChartDataByCc[cc]));
   });
 
+  /**
+   * 국내 차트
+   * 국내 코로나 검사 현황 및 성별, 나이에 따른 데이터를 조회한다.
+   */
+  const koreaTestChartData = generateKoreaTestChartData(allGlobalStats);
+  const { bySex, byAge } = apiClient.getByAgeAndBySex();
+
   return {
     lastUpdated: Date.now(),
     countryByCc,
     globalStats,
     notice: notice.filter((x) => !x.hidden),
+    koreaTestChartData,
+    koreaBySexChartData: bySex,
+    koreaByAgeChartData: byAge,
+  };
+};
+
+const generateKoreaTestChartData = (allGlobalStats) => {
+  const krData = allGlobalStats.filter((x) => x.cc === 'KR');
+
+  return {
+    date: krData.map((x) => x.date),
+    confirmedRate: krData.map((x) => x.confirmed / (x.confirmed + x.negative)),
+    confirmed: krData.map((x) => x.confirmed),
+    negative: krData.map((x) => x.negative),
+    testing: krData.map((x) => x.testing),
   };
 };
 
