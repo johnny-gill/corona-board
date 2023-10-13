@@ -6,10 +6,17 @@ import { Notice } from '../components/notice';
 import { GlobalSlide } from '../components/global-slide';
 import { GlobalChartSlide } from '../components/global-chart-slide';
 import { KoreaTestChart } from '../components/chart/korea-test-chart';
+import { KoreaBySexChart } from '../components/chart/korea-by-sex-chart';
 
 const SinglePage = ({ pageContext }) => {
   const { dataSource } = pageContext;
-  const { lastUpdated, globalStats, notice, koreaTestChartData } = dataSource;
+  const {
+    lastUpdated,
+    globalStats,
+    notice,
+    koreaTestChartData,
+    koreaBySexChartData,
+  } = dataSource;
   const lastUpdatedFormatted = new Date(lastUpdated).toLocaleString();
 
   return (
@@ -45,6 +52,10 @@ const SinglePage = ({ pageContext }) => {
       <KoreaTestChart
         id="korea-test-chart"
         koreaTestChartData={koreaTestChartData}
+      />
+      <KoreaBySexChart
+        id="korea-by-sex-chart"
+        koreaBySexChartData={koreaBySexChartData}
       />
     </div>
   );

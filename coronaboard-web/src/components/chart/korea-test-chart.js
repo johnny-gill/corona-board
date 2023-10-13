@@ -9,7 +9,6 @@ import {
 } from '../../utils/formatter';
 
 export const KoreaTestChart = ({ koreaTestChartData }) => {
-  console.log(koreaTestChartData)
   const chartOption = generateChartOption(koreaTestChartData);
 
   return (

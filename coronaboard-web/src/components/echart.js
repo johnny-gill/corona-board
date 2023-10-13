@@ -5,12 +5,12 @@ export const Echart = ({ wrapperCss, option }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    console.log('useEffect');
+    console.log('Echart useEffect');
     const chartInstance = echarts.init(chartRef.current);
     chartInstance.setOption(option);
 
     return () => {
-      console.log('dispose');
+      console.log('Echart dispose');
       chartInstance.dispose();
     };
   }, [option]);

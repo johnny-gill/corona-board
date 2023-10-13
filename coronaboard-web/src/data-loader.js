@@ -32,7 +32,6 @@ const getDataSource = async () => {
    */
   const koreaTestChartData = generateKoreaTestChartData(allGlobalStats);
   const { bySex, byAge } = apiClient.getByAgeAndBySex();
-
   return {
     lastUpdated: Date.now(),
     countryByCc,
