@@ -74,9 +74,9 @@ const generateChartOption = (data, dataType) => {
   };
 };
 
-export function KoreaByAgeChart({ data }) {
+export function KoreaByAgeChart({ koreaByAgeChartData }) {
   const [dataType, setDataType] = useState('confirmed');
-  const chartOption = generateChartOption(data, dataType);
+  const chartOption = generateChartOption(koreaByAgeChartData, dataType);
   return (
     <Card>
       <Card.Body>

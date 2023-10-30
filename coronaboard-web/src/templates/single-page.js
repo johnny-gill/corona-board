@@ -5,9 +5,7 @@ import { Dashboard } from '../components/dashboard';
 import { Notice } from '../components/notice';
 import { GlobalSlide } from '../components/global-slide';
 import { GlobalChartSlide } from '../components/global-chart-slide';
-import { KoreaTestChart } from '../components/chart/korea-test-chart';
-import { KoreaBySexChart } from '../components/chart/korea-by-sex-chart';
-import { KoreaByAgeChart } from '../components/chart/korea-by-age-chart';
+import { KoreaChartSlide } from '../components/korea-chart-slide';
 
 const SinglePage = ({ pageContext }) => {
   const { dataSource } = pageContext;
@@ -15,9 +13,6 @@ const SinglePage = ({ pageContext }) => {
     lastUpdated,
     globalStats,
     notice,
-    koreaTestChartData,
-    koreaBySexChartData,
-    koreaByAgeChartData,
   } = dataSource;
   const lastUpdatedFormatted = new Date(lastUpdated).toLocaleString();
 
@@ -51,18 +46,7 @@ const SinglePage = ({ pageContext }) => {
       <Notice notice={notice} />
       <GlobalSlide id="global-slide" dataSource={dataSource} />
       <GlobalChartSlide id="global-chart-slide" dataSource={dataSource} />
-      <KoreaTestChart
-        id="korea-test-chart"
-        koreaTestChartData={koreaTestChartData}
-      />
-      <KoreaBySexChart
-        id="korea-by-sex-chart"
-        koreaBySexChartData={koreaBySexChartData}
-      />
-      <KoreaByAgeChart
-        id="korea-by-age-chart"
-        data={koreaByAgeChartData}
-      />
+      <KoreaChartSlide id="korea-chart-slide" dataSource={dataSource} />
     </div>
   );
 };
