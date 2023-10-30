@@ -12,7 +12,6 @@ const getDataSource = async () => {
   const apiClient = new ApiClient();
 
   const allGlobalStats = await apiClient.getAllGlobalStats();
-  debugger;
   const groupedByDate = _.groupBy(allGlobalStats, 'date'); // 날짜별로 그룹화한 데이터
   const globalStats = generateGlobalStats(groupedByDate);
 
@@ -31,7 +30,7 @@ const getDataSource = async () => {
    * 국내 코로나 검사 현황 및 성별, 나이에 따른 데이터를 조회한다.
    */
   const koreaTestChartData = generateKoreaTestChartData(allGlobalStats);
-  const { bySex, byAge } = apiClient.getByAgeAndBySex();
+  const { bySex, byAge } = await apiClient.getByAgeAndBySex();
   return {
     lastUpdated: Date.now(),
     countryByCc,
