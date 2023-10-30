@@ -1,0 +1,109 @@
+import React from 'react';
+import { useState } from 'react';
+import { Button, ButtonGroup, Card } from 'react-bootstrap';
+import { Echart } from '../echart';
+import { css } from '@emotion/react';
+import { colors } from '../../config';
+import {
+  numberWithCommas,
+  numberWithUnitFormatter,
+} from '../../utils/formatter';
+
+const generateChartOption = (data, dataType) => {
+  const textByDataType = { confirmed: '확진자', death: '사망자' };
+  const textByAge = {
+    0: '0-9세',
+    10: '10대',
+    20: '20대',
+    30: '30대',
+    40: '40대',
+    50: '50대',
+    60: '60대',
+    70: '70대',
+    80: '80대 이상',
+  };
+
+  const ageKeys = Object.keys(data); // 0, 10, 20, ...
+  const ageChartData = ageKeys.map((ageKey) => data[ageKey][dataType]); // 연령별 확진자 또는 사망자 수
+  const total = ageChartData.reduce((acc, x) => acc + x, 0); // 총 확진자 또는 사망자 수
+  const series = [
+    {
+      color: colors[dataType],
+      type: 'bar',
+      label: {
+        show: true,
+        position: 'top',
+        formatter: (obj) => {
+          const percent = ((obj.value / total) * 100).toFixed(1);
+          return `${numberWithCommas(obj.value)}명\n(${percent}%)`;
+        },
+      },
+      data: ageChartData,
+    },
+  ];
+
+  return {
+    animation: true,
+    title: {
+      text: '대한민국 연령별 확진자 현황',
+      subtext: `총 ${textByDataType[dataType]} 수 ${numberWithCommas(
+        total
+      )} 명`,
+      left: 'center',
+    },
+    grid: {
+      left: 40,
+      right: 20,
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        rotate: 30,
+        formatter: numberWithUnitFormatter,
+      },
+    },
+    xAxis: {
+      type: 'category',
+      data: ageKeys.map((ageKey) => textByAge[ageKey]),
+      axisLabel: {
+        interval: 0,
+        rotate: 30,
+      },
+    },
+    series,
+  };
+};
+
+export function KoreaByAgeChart({ data }) {
+  const [dataType, setDataType] = useState('confirmed');
+  const chartOption = generateChartOption(data, dataType);
+  return (
+    <Card>
+      <Card.Body>
+        <Echart
+          wrapperCss={css`
+            width: 100%;
+            height: 400px;
+          `}
+          option={chartOption}
+        />
+        <ButtonGroup size="md">
+          <Button
+            variant="outline-primary"
+            active={dataType === 'confirmed'}
+            onClick={() => setDataType('confirmed')}
+          >
+            확진자
+          </Button>
+          <Button
+            variant="outline-primary"
+            active={dataType === 'death'}
+            onClick={() => setDataType('death')}
+          >
+            사망자
+          </Button>
+        </ButtonGroup>
+      </Card.Body>
+    </Card>
+  );
+}
