@@ -6,6 +6,7 @@ import { Notice } from '../components/notice';
 import { GlobalSlide } from '../components/global-slide';
 import { GlobalChartSlide } from '../components/global-chart-slide';
 import { KoreaChartSlide } from '../components/korea-chart-slide';
+import { YoutubeSlide } from '../components/youtube-slide';
 
 const SinglePage = ({ pageContext }) => {
   const { dataSource } = pageContext;
@@ -47,6 +48,7 @@ const SinglePage = ({ pageContext }) => {
       <GlobalSlide id="global-slide" dataSource={dataSource} />
       <GlobalChartSlide id="global-chart-slide" dataSource={dataSource} />
       <KoreaChartSlide id="korea-chart-slide" dataSource={dataSource} />
+      <YoutubeSlide id="youtube-slide" dataSource={dataSource} />
     </div>
   );
 };

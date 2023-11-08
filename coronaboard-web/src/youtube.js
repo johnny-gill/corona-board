@@ -79,5 +79,3 @@ async function getYouTubeVideosByKeyword(keyword) {
 module.exports = {
   getYouTubeVideosByKeyword,
 };
-
-getYouTubeVideosByKeyword('장원영');

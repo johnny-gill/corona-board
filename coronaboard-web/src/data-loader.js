@@ -6,6 +6,7 @@ const ApiClient = require('./api-client');
 const notice = require('../../tools/downloaded/notice.json');
 const path = require('path');
 const fs = require('fs-extra');
+const { getYouTubeVideosByKeyword } = require('./youtube');
 
 const getDataSource = async () => {
   const countryByCc = _.keyBy(countryInfo, 'cc');
@@ -31,6 +32,12 @@ const getDataSource = async () => {
    */
   const koreaTestChartData = generateKoreaTestChartData(allGlobalStats);
   const { bySex, byAge } = await apiClient.getByAgeAndBySex();
+
+  /**
+   * 키워드를 통해 유튜브 비디오 정보를 조회한다.
+   */
+  const youtubeVideos = await getYouTubeVideosByKeyword('장원영');
+
   return {
     lastUpdated: Date.now(),
     countryByCc,
@@ -39,6 +46,7 @@ const getDataSource = async () => {
     koreaTestChartData,
     koreaBySexChartData: bySex,
     koreaByAgeChartData: byAge,
+    youtubeVideos,
   };
 };
 
